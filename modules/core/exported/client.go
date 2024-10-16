@@ -22,6 +22,9 @@ const (
 	// LocalhostClientID is the sentinel client ID for the localhost client.
 	LocalhostClientID string = Localhost
 
+	// Avalanche is the client type for Avalanche Network
+	Avalanche string = "14-avalanche"
+
 	// Active is a status type of a client. An active client is allowed to be used.
 	Active Status = "Active"
 
