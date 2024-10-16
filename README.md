@@ -132,7 +132,9 @@ The following audits have been performed on the `ibc-go` source code:
 
    4.2 [ICS 06 Solo Machine](https://github.com/cosmos/ibc-go/tree/main/modules/light-clients/06-solomachine)
 
-    4.3 [ICS 09 Localhost](https://github.com/cosmos/ibc-go/tree/main/modules/light-clients/09-localhost)
+   4.3 [ICS 09 Localhost](https://github.com/cosmos/ibc-go/tree/main/modules/light-clients/09-localhost)
+
+   4.4 [ICS 14 Avalanche](https://github.com/cosmos/ibc-go/tree/main/modules/light-clients/14-avalanche)
 
 5. **[E2E Integration Tests](https://github.com/cosmos/ibc-go/tree/main/e2e)**
 
