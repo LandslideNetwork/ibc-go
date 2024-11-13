@@ -16,4 +16,4 @@ For the most up-to-date version of the policies that govern vulnerability disclo
 The policy hosted on HackerOne is the official Coordinated Vulnerability Disclosure policy and Safe Harbor for the Interchain Stack, and the teams and infrastructure it supports, and it supersedes previous security policies that have been used in the past by individual teams and projects with targets in scope of the program.
 
 # Security Audit
-The IBC light client for Avalanche has been audited by Halborn Security. You can view the full audit report [here](link).
+The IBC light client for Avalanche has been audited by Halborn Security. You can view the full audit report [here](https://github.com/LandslideNetwork/ibc-go/blob/avalanche-light-client/IBC%20Precompiled%20Contracts%20%26%20Light%20Client%20for%20Avalanche.pdf).
