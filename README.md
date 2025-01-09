@@ -21,56 +21,114 @@
     <img alt="Code Coverage" src="https://sonarcloud.io/api/project_badges/measure?project=cosmos_ibc-go&metric=coverage" />
   </a>
 </div>
-<div align="center">
-  <a href="https://github.com/cosmos/ibc-go">
-    <img alt="Lines Of Code" src="https://sonarcloud.io/api/project_badges/measure?project=cosmos_ibc-go&metric=ncloc" />
-  </a>
-  <a href="https://discord.com/invite/interchain">
-    <img alt="Discord" src="https://img.shields.io/discord/669268347736686612.svg" />
-  </a>
-  <a href="https://sourcegraph.com/github.com/cosmos/ibc-go?badge">
-    <img alt="Imported by" src="https://sourcegraph.com/github.com/cosmos/ibc-go/-/badge.svg" />
-  </a>
-    <img alt="Tests / Code Coverage Status" src="https://github.com/cosmos/ibc-go/workflows/Tests%20/%20Code%20Coverage/badge.svg" />
-    <img alt="E2E Status" src="https://github.com/cosmos/ibc-go/workflows/Tests%20/%20E2E/badge.svg" />
-</div>
 
 The [Inter-Blockchain Communication protocol (IBC)](https://ibcprotocol.dev/) allows blockchains to talk to each other. This end-to-end, connection-oriented, stateful protocol provides reliable, ordered, and authenticated communication between heterogeneous blockchains. For a high-level explanation of what IBC is and how it works, please read [this blog post](https://medium.com/the-interchain-foundation/eli5-what-is-ibc-def44d7b5b4c).
 
 This IBC implementation in Golang is built as a Cosmos SDK module. To understand more about how to use the `ibc-go` module as well as about the IBC protocol, please check out the Interchain Developer Academy [section on IBC](https://tutorials.cosmos.network/academy/3-ibc/), or [our docs](./docs/docs/01-ibc/01-overview.md).
 
-## Roadmap
+## Light Clients
 
-For an overview of upcoming changes to ibc-go take a look at the [roadmap](./docs/docs/01-ibc/10-roadmap.md).
+### ICS 14 Avalanche Light Client Integration
 
-This roadmap is also available as a [project board](https://github.com/orgs/cosmos/projects/7/views/25).
+The Avalanche light-client is not part of the canonical IBC-go repository and must be implemented separately. Below are tailored instructions for versions below and above v0.50. Please ensure you follow these specific steps to correctly integrate the Avalanche light-client into your Cosmos SDK application.
 
-For the latest expected release timelines, please check [here](https://github.com/cosmos/ibc-go/wiki/Release-timeline).
+#### Lower than v0.50
+**Integrating the Avalanche Light-Client Module in Your Cosmos SDK Application**
 
-## Releases
+Enhance your Cosmos SDK application by integrating the `light-clients/14-avalanche` module. Follow this step-by-step guide to easily import and register the Avalanche light-client in your project.
 
-The release lines currently supported are v7, v8 and v9.
+1. **Import the Avalanche Light-Client Module**
+   
+   First, ensure you import the Avalanche (`ava`) module into your Cosmos SDK application. Typically, this is done in the `app.go` file, where your application's modules are defined:
+   ```go
+   import (
+     // other imports...
+     ava "github.com/cosmos/ibc-go/v8/modules/light-clients/14-avalanche"
+   )
+   ```
 
-Please refer to the [Stable Release Policy section of RELEASES.md](https://github.com/cosmos/ibc-go/blob/main/RELEASES.md#stable-release-policy) for more details.
+2. **Register the Avalanche Module in the Module Manager**
+   
+   Next, add the `ava` module to your application’s `ModuleManager`. Locate the section where you initialize the `ModuleManager` and include the Avalanche light-client:
+   ```go
+   app.ModuleManager = module.NewManager(
+     // other modules...
+     ava.AppModuleBasic{},
+   )
+   ```
 
-Please refer to our [versioning guide](https://github.com/cosmos/ibc-go/blob/main/RELEASES.md) for more information on how to understand our release versioning.
+By following these steps, you'll successfully integrate the Avalanche light-client module into your Cosmos SDK application, enabling enhanced interoperability with Avalanche-based chains.
+
+#### Higher than v0.50
+**Integrating the Avalanche Light-Client Module in Your Cosmos SDK Application**
+
+Enhance your Cosmos SDK application by integrating the `light-clients/14-avalanche` module. Follow this step-by-step guide to easily import and register the Avalanche light-client in your project.
+
+1. **Import the Avalanche Light-Client Module**
+
+   First, ensure you import the Avalanche (`ava`) module into your Cosmos SDK application. Typically, this is done in the `ibc.go` file, where your application's modules are defined:
+   ```go
+   import (
+     // other imports...
+     ava "github.com/cosmos/ibc-go/v8/modules/light-clients/14-avalanche"
+   )
+   ```
+
+2. **Register the Avalanche Module in the Module Manager**
+
+   Add the `ava` module to your application’s `ModuleManager`. Locate the section where you initialize the `ModuleManager` and include the Avalanche light-client:
+   ```go
+   app.ModuleManager = module.NewManager(
+     // other modules...
+     ava.AppModuleBasic{},
+   )
+   ```
+
+3. **Add the Module to the RegisterIBC Function**
+
+   Finally, register the Avalanche module in the `RegisterIBC` function of your application. This function is typically found in the `ibc.go` file:
+   ```go
+   func RegisterIBC(registry cdctypes.InterfaceRegistry) map[string]appmodule.AppModule {
+       modules := map[string]appmodule.AppModule{
+           // other modules...
+           ava.ModuleName: ava.AppModuleBasic{},
+       }
+       ...
+   }
+   ```
+
+By following these steps, you'll successfully integrate the Avalanche light-client module into your Cosmos SDK application, enabling enhanced interoperability with Avalanche-based chains.
+
+---
+
+For the complete list of light clients, refer to the following:
+
+- [ICS 07 Tendermint](https://github.com/cosmos/ibc-go/tree/main/modules/light-clients/07-tendermint)
+- [ICS 06 Solo Machine](https://github.com/cosmos/ibc-go/tree/main/modules/light-clients/06-solomachine)
+- [ICS 09 Localhost](https://github.com/cosmos/ibc-go/tree/main/modules/light-clients/09-localhost)
+- [ICS 14 Avalanche](https://github.com/cosmos/ibc-go/tree/main/modules/light-clients/14-avalanche)
+
+---
+
+### Official Landslide Documentation
+
+For more detailed information on the Landslide network, refer to the [Landslide Docs](https://docs.landslide.network/).
+
+---
 
 ## Ecosystem
-
 Discover more applications and middleware in the [cosmos/ibc-apps repository](https://github.com/cosmos/ibc-apps#-bonus-content).
 
 ## Community
-
 We have active, helpful communities on Discord and Telegram.
 
-For questions and support please use the `developers` channel in the [Cosmos Network Discord server](https://discord.com/channels/669268347736686612/1019978171367559208) or join the [Interchain Discord server](https://discord.com/invite/interchain). The issue list of this repo is exclusively for bug reports and feature requests.
+For questions and support, please use the `developers` channel in the [Cosmos Network Discord server](https://discord.com/channels/669268347736686612/1019978171367559208) or join the [Interchain Discord server](https://discord.com/invite/interchain). The issue list of this repo is exclusively for bug reports and feature requests.
 
 To receive announcements of new releases or other technical updates, please join the [Telegram group that we administer](https://t.me/ibc_is_expansive).
 
-We run biweekly community calls to update the community with our current direction and gather feedback on what to work on next. The community calls are also a platform for you to update everyone else with what you're working on, ask questions and find opportunities to collaborate. Please join [this Google group](https://groups.google.com/g/ibc-community) to receive a calendar invitation for the meeting.
+We run biweekly community calls to update the community with our current direction and gather feedback on what to work on next. The community calls are also a platform for you to update everyone else with what you're working on, ask questions, and find opportunities to collaborate. Please join [this Google group](https://groups.google.com/g/ibc-community) to receive a calendar invitation for the meeting.
 
 ## Contributing
-
 If you're interested in contributing to ibc-go, please take a look at the [contributing guidelines](./CONTRIBUTING.md). We welcome and appreciate community contributions!
 
 This project adheres to ibc-go's [code of conduct](./CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
@@ -82,14 +140,10 @@ To help contributors understand which issues are good to pick up, we have the fo
 
 If you are interested in working on an issue, please comment on it; then we will be able to assign it to you. We will be happy to answer any questions you may have and help you out while you work on the issue.
 
-If you have any general questions or feedback, please reach out to us in the [Interchain Discord server](https://discord.com/invite/interchain).
-
 ## Security
-
 To report a security vulnerability, see our [Coordinated Vulnerability Disclosure Policy](./SECURITY.md).
 
 ## Audits
-
 The following audits have been performed on the `ibc-go` source code:
 
 - [ICS20 Fungible Token Transfer](https://github.com/informalsystems/audits/tree/dc8b503727adcbb8e29c3d3a25a9070e0bf1ec87/IBC-GO) by Informal Systems.
@@ -98,53 +152,4 @@ The following audits have been performed on the `ibc-go` source code:
 - [ICS08 Wasm Clients](https://github.com/cosmos/ibc-go/blob/main/docs/audits/08-wasm/Ethan%20Frey%20-%20Wasm%20Client%20Review.pdf) by Ethan Frey/Confio.
 - [ICS04 Channel upgradability](https://github.com/cosmos/ibc-go/blob/main/docs/audits/04-channel-upgrades/Atredis%20Partners%20-%20Interchain%20Foundation%20IBC-Go%20Channel%20Upgrade%20Feature%20Assessment%20-%20Report%20v1.1.pdf) by Atredis Partners.
 
-## Quick Navigation
-
-1. **[Core IBC Implementation](https://github.com/cosmos/ibc-go/tree/main/modules/core)**
-
-   1.1 [ICS 02 Client](https://github.com/cosmos/ibc-go/tree/main/modules/core/02-client)
-
-   1.2 [ICS 03 Connection](https://github.com/cosmos/ibc-go/tree/main/modules/core/03-connection)
-
-   1.3 [ICS 04 Channel](https://github.com/cosmos/ibc-go/tree/main/modules/core/04-channel)
-
-   1.4 [ICS 05 Port](https://github.com/cosmos/ibc-go/tree/main/modules/core/05-port)
-
-   1.5 [ICS 23 Commitment](https://github.com/cosmos/ibc-go/tree/main/modules/core/23-commitment/types)
-
-   1.6 [ICS 24 Host](https://github.com/cosmos/ibc-go/tree/main/modules/core/24-host)
-
-2. **Applications**
-
-   2.1 [ICS 20 Fungible Token Transfers](https://github.com/cosmos/ibc-go/tree/main/modules/apps/transfer)
-
-   2.2 [ICS 27 Interchain Accounts](https://github.com/cosmos/ibc-go/tree/main/modules/apps/27-interchain-accounts)
-
-3. **Middleware**
-
-   3.1 [ICS 29 Fee Middleware](https://github.com/cosmos/ibc-go/tree/main/modules/apps/29-fee)
-
-    3.2 [Callbacks Middleware](https://github.com/cosmos/ibc-go/tree/main/modules/apps/callbacks)
-
-4. **Light Clients**
-
-   4.1 [ICS 07 Tendermint](https://github.com/cosmos/ibc-go/tree/main/modules/light-clients/07-tendermint)
-
-   4.2 [ICS 06 Solo Machine](https://github.com/cosmos/ibc-go/tree/main/modules/light-clients/06-solomachine)
-
-   4.3 [ICS 09 Localhost](https://github.com/cosmos/ibc-go/tree/main/modules/light-clients/09-localhost)
-
-   4.4 [ICS 14 Avalanche](https://github.com/cosmos/ibc-go/tree/main/modules/light-clients/14-avalanche)
-
-5. **[E2E Integration Tests](https://github.com/cosmos/ibc-go/tree/main/e2e)**
-
-## Documentation and Resources
-
-- [IBC Website](https://ibcprotocol.dev/)
-- [IBC Protocol Specification](https://github.com/cosmos/ibc)
-- [Documentation](./docs/docs/01-ibc/01-overview.md)
-- [Interchain Developer Academy](https://tutorials.cosmos.network/academy/3-ibc/)
-
 ---
-
-The development of ibc-go is led primarily by Interchain GmbH. Funding for this development comes primarily from the [Interchain Foundation](https://interchain.io), a Swiss non-profit.
